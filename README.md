@@ -1,5 +1,5 @@
 # Summarize Article
-A simple application to summarize articles that you are reading using React.js, Vite, Tailwind.css, Redex Toolkit and RapidAPI.
+A simple application to summarize articles that you are reading using React.js, Vite, Tailwind.css, Redux Toolkit and RapidAPI.
 ### Example
 
 ![Imgur](https://i.imgur.com/EbrmdGt.png)
