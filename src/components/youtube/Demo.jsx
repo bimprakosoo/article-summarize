@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from "react";
 
-import { copy, linkIcon, loader, tick } from "../assets";
-import { useLazyGetSummaryQuery } from "../services/article";
+import { copy, linkIcon, loader, tick } from "../../assets";
+import { useLazyGetSummaryQuery } from "../../services/youtube";
 
 const Demo = () => {
-  const [article, setArticle] = useState({
+  const [youtube, setYoutube] = useState({
     url: "",
     summary : "",
   });
 
-  const [allArticles, setAllArticles] = useState([]);
+  const [allYoutubes, setAllYoutubes] = useState([]);
   const [copied, setCopied] = useState("")
 
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
 
   useEffect(() => {
-    const articlesLocalStorage = JSON.parse(
-      localStorage.getItem("articles")
+    const youtubesLocalStorage = JSON.parse(
+      localStorage.getItem("youtubes")
     )
 
-    if(articlesLocalStorage) {
-      setAllArticles(articlesLocalStorage)
+    if(youtubesLocalStorage) {
+      setAllYoutubes(youtubesLocalStorage)
     }
   }, [])
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const { data } = await getSummary({ articleUrl: article.url});
+    const { data } = await getSummary({ youtubeUrl: youtube.url});
     
     if(data?.summary) {
-      const newArticle = { ...article, summary: data.summary };
-      const updatedAllArticles = [newArticle, ...allArticles];
+      const newYoutube = { ...youtube, summary: data.summary };
+      const updatedAllYoutubes = [newYoutube, ...allYoutubes];
 
-      setArticle(newArticle);
-      setAllArticles(updatedAllArticles);
+      setYoutube(newYoutube);
+      setAllYoutubes(updatedAllYoutubes);
 
-      localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+      localStorage.setItem("youtubes", JSON.stringify(updatedAllYoutubes));
     }
   }
 
@@ -60,9 +60,9 @@ const Demo = () => {
           <input 
             type="url" 
             placeholder="Enter a URL" 
-            value={article.url} 
-            onChange={(e) => setArticle({ 
-              ...article, url: e.target.value
+            value={youtube.url} 
+            onChange={(e) => setYoutube({ 
+              ...youtube, url: e.target.value
             })} 
             required
             className="url_input peer"
@@ -78,10 +78,10 @@ const Demo = () => {
 
         { /* URL History */}
         <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
-          {allArticles.map((item, index) => (
+          {allYoutubes.map((item, index) => (
             <div
               key={`link-${index}`}
-              onClick={() => setArticle(item)}
+              onClick={() => setYoutube(item)}
               className="link_card"
             >
               <div className="copy_btn" onClick={() => handleCopy(item.url)}>
@@ -112,13 +112,13 @@ const Demo = () => {
             </span>
           </p>
         ) : (
-          article.summary && (
+          youtube.summary && (
             <div className="flex flex-col gap-3">
               <h2 className="font-satoshi font-bold text-gray-600 text-xl">
-                Article <span className="blue_gradient">Summary</span>
+                Youtube Video <span className="blue_gradient">Summary</span>
               </h2>
               <div className="summary_box">
-                <p className="font-inter font-medium text-sm text-gray-700">{article.summary}</p>
+                <p className="font-inter font-medium text-sm text-gray-700">{youtube.summary}</p>
               </div>
             </div>
           )
